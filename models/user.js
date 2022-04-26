@@ -34,6 +34,15 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    phoneNumber:{
+        type: String,
+        validate(value){
+            if(!validator.isMobilePhone(value,'en-NG')){
+                throw new Error ("Please provide a valid number")
+            }
+        }
+
+    },
     role: {
         type: String,
         enum : ["Admin", "User"],
@@ -50,26 +59,10 @@ const userSchema = new mongoose.Schema({
 })
 
 //Link order model to user model
-userSchema.virtual('order',{
-    ref: "Order",
-    localField:"_id",
-    foreignField: "owner"
-})
-userSchema.virtual('order',{
-    ref: "Order",
-    localField:"name",
-    foreignField:"name"
-})
-
-// Hash password before saving
-userSchema.pre('save', async function (next) {
-    const user = this
-
-    if(user.isModified('password')) {
-        user.password = await bcrypt.hash(user.password,8)
-    }
-
-    next()
+userSchema.virtual('orders',{
+    ref: 'Order',
+    localField:'_id',
+    foreignField: 'owner'
 })
 
 //find user in the database.
@@ -99,7 +92,7 @@ userSchema.methods.generateAuthToken= async function () {
 //Delete user tasks when user is removed
 userSchema.pre('remove', async function (next) {
     const user = this
-    await Task.deleteMany({ owner: user._id})
+    await Order.deleteMany({owner: user._id})
     next()
 })
 
@@ -111,17 +104,9 @@ userSchema.methods.toJSON = function() {
 
     delete userObject.password
     delete userObject.tokens
-    delete userObject.avatar
 
     return userObject
 }
-
-// Link tasks User model to Order model
-userSchema.virtual('orders', {
-    ref: 'order',
-    localField: '_id',
-    foreignField: 'owner'
-})
 
 
 const User = mongoose.model('User', userSchema)

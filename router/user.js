@@ -9,12 +9,12 @@ router.post("/users",  async (req,res) => {
 
     try{
         await user.save()
-        // sendWelcomeEmail(user.email, user.name)
+        sendWelcomeEmail(user.email, user.name)
         token = await user.generateAuthToken()
         res.status(201).send({user, token})
 
     } catch (e) {
-        res.status(400).send("Opps! Something went wrong!")
+        res.status(400).send("Please check your email or password.")
     }
 })
 
@@ -54,24 +54,17 @@ router.post('/users/logoutAll',auth, async(req,res) => {
         res.status(500).send()
     }
 })
-router.get("/users/me", auth, async (req,res) => {
-         res.send(req.user)
-   
-    }
- )
 
  router.patch('/users/me', auth ,async(req,res) => {
     const updates = Object.keys(req.body)
-    const allowedUpdates = ["name","email","password","age"]
+    const allowedUpdates = ["name","email","password"]
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
-    // console.log(isValidOperation)
 
     if(!isValidOperation){
         return res.status(400).send({error: 'Invalid updates!'})
     }
 
     try{
-
         updates.forEach((update) => req.user[update] = req.body[update])
         await req.user.save()
         res.send(req.user)
