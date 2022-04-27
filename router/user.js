@@ -9,12 +9,12 @@ router.post("/users",  async (req,res) => {
 
     try{
         await user.save()
-        sendWelcomeEmail(user.email, user.name)
+        // sendWelcomeEmail(user.email, user.name)
         token = await user.generateAuthToken()
         res.status(201).send({user, token})
 
     } catch (e) {
-        res.status(400).send("Please check your email or password.")
+        res.status(400).send("Please ensure that this email has not been used previously on this app and that your password and phone number are valid.")
     }
 })
 

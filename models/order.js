@@ -7,23 +7,35 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
     food: {
-        type: String,
-        default: ""
+        type: Array,
+        default: []
     },
     drink: {
-        type: String,
-        default: ""
+        type: Array,
+        default: []
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User'
     },
+    phoneNumber: {
+        type: String,
+    },
     name: {
         type: String,
         required: true,
     },
-    payment_status: {
+    orderStatus: {
+        type: String,
+        enum: ["Pending","Placed"],
+        default: "Pending"
+    },
+    userPaymentStatus: {
+        type: String,
+        default: false,
+    },
+    adminPaymentStatus: {
         type: String,
         default: false,
     }
