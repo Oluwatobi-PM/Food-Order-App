@@ -60,7 +60,6 @@ orderSchema.methods.generateTotal= async function () {
     const orderTotal = totalDrinkPrice + totalFoodPrice
     order.orderTotal = orderTotal
     await order.save()
-    return orderTotal
 }
 
 const Order = mongoose.model('Order', orderSchema)

@@ -1,6 +1,5 @@
 const express = require('express')
 const Order = require('../models/order')
-const Menu = require('../models/admin')
 const {auth, authRole} = require('../middleware/auth')
 const Restaurant = require('../models/admin')
 const router = new express.Router()
