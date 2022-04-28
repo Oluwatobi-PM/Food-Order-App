@@ -54,7 +54,7 @@ orderSchema.methods.generateTotal= async function () {
         totalFoodPrice += unitFoodPrice
     }
     for(i = 0; i < order.drink.length; i++){
-        const unitDrinkPrice = order.drink[i].Unit * order.drink[i].Price
+        unitDrinkPrice = order.drink[i].Unit * order.drink[i].Price
         totalDrinkPrice += unitDrinkPrice
     }
     const orderTotal = totalDrinkPrice + totalFoodPrice
