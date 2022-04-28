@@ -19,6 +19,16 @@ router.get("/menulist", auth, async (req,res) => {
     }
 })
 
+router.post('/users/login', async(req,res) => {    
+    try{  const user = await User.findByCredentials(req.body.email,req.body.password)
+        const token = await user.generateAuthToken()
+        res.status(200).send({user, token})
+    }catch(e){
+        res.status(400).send("Check username or password")
+
+    }
+})
+
 router.post("/order", auth, async (req,res) => {
 
     const order = new Order ({
@@ -28,6 +38,7 @@ router.post("/order", auth, async (req,res) => {
         phoneNumber: req.user.phoneNumber
     })
     try{
+        await order.generateTotal()
         await order.save()
         res.status(201).send(order)
 

@@ -5,14 +5,10 @@ const restaurantSchema = new mongoose.Schema({
         type: String,
         unique: true
     },
-    food: {
-        type: Array,
-        default: []
-    },
-    drink: {
-        type: Array,
-        default: []
-    }
+    food: [{Name: String,
+        Price: Number}],
+    drink: [{Name: String,
+        Price: Number}],
 }, {
     timestamps: true
 })

@@ -19,6 +19,7 @@ const orderSchema = new mongoose.Schema({
         required: true,
         ref: 'User'
     },
+    orderTotal: Number,
     phoneNumber: {
         type: String,
     },
@@ -44,6 +45,23 @@ const orderSchema = new mongoose.Schema({
     timestamps: true
 })
 
+orderSchema.methods.generateTotal= async function () {
+    const order = this
+    totalDrinkPrice = 0
+    totalFoodPrice = 0
+    for(i = 0; i < order.food.length; i++){
+        unitFoodPrice = order.food[i].Unit * order.food[i].Price
+        totalFoodPrice += unitFoodPrice
+    }
+    for(i = 0; i < order.drink.length; i++){
+        const unitDrinkPrice = order.drink[i].Unit * order.drink[i].Price
+        totalDrinkPrice += unitDrinkPrice
+    }
+    const orderTotal = totalDrinkPrice + totalFoodPrice
+    order.orderTotal = orderTotal
+    await order.save()
+    return orderTotal
+}
 
 const Order = mongoose.model('Order', orderSchema)
 

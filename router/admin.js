@@ -4,19 +4,6 @@ const Restaurant = require('../models/admin')
 const {auth, authRole} = require('../middleware/auth')
 const router = new express.Router()
 
-// router.post("/users",  async (req,res) => {
-//     const user = new User(req.body)
-
-//     try{
-//         await user.save()
-//         // sendWelcomeEmail(user.email, user.name)
-//         token = await user.generateAuthToken()
-//         res.status(201).send({user, token})
-
-//     } catch (e) {
-//         res.status(400).send("Please check your email or password.")
-//     }
-// })
 
 router.post("/addrestaurant", auth, authRole, async (req,res) => {
 
@@ -30,7 +17,7 @@ router.post("/addrestaurant", auth, authRole, async (req,res) => {
         res.status(201).send(restaurant)
 
     }catch(err){
-        res.status(400).send(`Opps. It seems like ${req.body.name} is already on the system. Please use the Update Menu tab instead`)
+        res.status(400).send(`Opps. It seems like ${req.body.restaurant} is already on the system. Please use the Update Menu tab instead`)
     }
 })
 
