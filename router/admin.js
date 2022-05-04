@@ -2,7 +2,13 @@ const express = require('express')
 const Order = require('../models/order')
 const Restaurant = require('../models/admin')
 const {auth, authRole} = require('../middleware/auth')
+// const {exportToExcel} = require('../common/export-to-excel')
+// const { Workbook } = require('exceljs')
 const router = new express.Router()
+const XLSX = require ('xlsx')
+const path = require('path')
+
+
 
 
 router.post("/addrestaurant", auth, authRole, async (req,res) => {
@@ -108,6 +114,40 @@ router.delete('/menu/:id', auth, authRole, async(req,res) => {
     } catch(err){
         res.status(400).send(e)
     }
+})
+
+// router.get('/orders/extractdata', auth, authRole, async(req,res) => {
+//     try{
+//         const orders = await exportToExcel
+//         return Workbook.xlsx.write(res).then(() => {
+//             res.status(200).end
+//         })
+//     }catch(err){
+//         res.status(500).send(err)
+//     }
+// })
+
+router.post('/orders/exportdata', auth, authRole, async(req,res) => {
+try{
+    var workbook = XLSX.utils.book_new(); //new workbook
+    Order.find((err,data) => {
+        if (err) {
+            console.log(err)
+        }else {
+            var orders=JSON.stringify(data);
+            orders = JSON.parse(orders);
+            var worksheet = XLSX.utils.json_to_sheet(orders)
+            var download = __dirname+"\public\exportdata.xlsx"
+            XLSX.utils.book_append_sheet(workbook,worksheet,"sheet1")
+            XLSX.writeFile(workbook,download)
+            res.download(download)
+        }
+    })
+
+} catch (e){ 
+    res.status(500).send(e)
+    
+}
 })
 
 module.exports = router
