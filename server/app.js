@@ -5,9 +5,16 @@ const orderRouter = require('./router/order')
 const adminRouter = require('./router/admin')
 const cors = require('cors')
 const path = require('path')
+const bodyParser =require('body-parser')
 
 const app = express()
 
+app.get('/', (req, res)=>{
+    res.send("Welcome to your server")
+    })
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended:true})) 
 app.use(express.static(__dirname+'/public'))
 app.use(cors({origin: '*'}))
 app.use(cors({
