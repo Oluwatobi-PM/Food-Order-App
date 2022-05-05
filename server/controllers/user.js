@@ -6,7 +6,7 @@ exports.users_createuser = async (req,res) => {
 
     try{
         await user.save()
-        // sendWelcomeEmail(user.email, user.name)
+        sendWelcomeEmail(user.email, user.name)
         token = await user.generateAuthToken()
         res.status(201).send({user, token})
 

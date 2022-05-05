@@ -1,4 +1,3 @@
-
 const express = require('express')
 const {auth, authRole} = require('../middleware/auth')
 const AdminController = require('../controllers/admin')
@@ -16,5 +15,7 @@ router.get("/allorders", auth, authRole, AdminController.admin_getallorders)
 router.patch('/updatemenu/:id', auth, authRole, AdminController.admin_updatemenu)
 
 router.delete('/menu/:id', auth, authRole, AdminController.admin_deletemenu)
+
+router.post('orders/exportdata',auth,authRole,AdminController.admin_exportdata)
 
 module.exports = router
