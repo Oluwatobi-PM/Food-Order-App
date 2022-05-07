@@ -15,6 +15,9 @@ exports.admin_createmenu = async (req,res) => {
         res.status(201).send(restaurant)
 
     }catch(err){
+        if(!restaurant.restaurant){
+            res.status(400).send("Please enter restaurant name")
+        }
         res.status(400).send(`Opps. It seems like ${req.body.restaurant} is already on the system. Please use the Update Menu tab instead`)
     }
 }
