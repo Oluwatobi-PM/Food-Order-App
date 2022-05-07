@@ -10,15 +10,13 @@ exports.admin_createmenu = async (req,res) => {
         creatorID: req.user._id,
         creatorName: req.user.name
     })
+    if(!restaurant.restaurant){
+    return res.status(400).send("Please enter restaurant name")}
     try{
         await restaurant.save()
         res.status(201).send(restaurant)
-
     }catch(err){
-        if(!restaurant.restaurant){
-            res.status(400).send("Please enter restaurant name")
-        }
-        res.status(400).send(`Opps. It seems like ${req.body.restaurant} is already on the system. Please use the Update Menu tab instead`)
+            res.status(400).send(`Opps. It seems like ${req.body.restaurant} is already on the system. Please use the Update Menu tab instead`)
     }
 }
 
