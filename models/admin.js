@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const restaurantSchema = new mongoose.Schema({
     restaurant: {
         type: String,
-        unique: true
+        unique: true,
+        required: true
     },
     food: [{Name: String,
         Price: Number}],
